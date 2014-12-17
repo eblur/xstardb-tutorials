@@ -54,26 +54,26 @@ pe_grid = xstar_load_tables( fgrid );
 
 %% 3. Look for the o_vii triplet
 
+variable o_vii = where( xstar_el_ion(pe_grid.mdb, O, 7) );
+xstar_page_grid( pe_grid, o_vii );
+
 %% Each transition is assigned a "unique id" based on the ion, lower
 %% level, and upper level.  These properties are indexed with integers
 %% ind_ion, ind_lo, and ind_up (see e.g. xstarlevels.txt)
 
-%% We will use this fact to look for the O VII triplet.
+%% Look for the index values associated with the forbidden line of the
+%% O VII He-like triplet:
 
-variable o_vii = where( xstar_el_ion(pe_grid.mdb, O, 7) );
-xstar_page_grid( pe_grid, o_vii );
-
-%% To look for index values associated with the forbidden line of the
-%% O VII He-like triplet, we can print the information directly from
-%% the structure, e.g. print(pe_grid[o_vii].ind_lo);
-
-%% One can also use the built-in function:
 xstar_page_id( pe_grid, o_vii );
 
-%% Let's track the luminosity of the forbidden line as it changes with rlogxi
-%% The lower and upper index values for that transition are 1 and 2, respectively
+%% The lower level index is 1, and the upper level index is 2.
+%% We'll use this fact to pinpoint the forbidden line:
 
 variable o_vii_F = where(xstar_trans( pe_grid.mdb, O, 7, 1, 2 ));
+
+%% Then we'll get the luminosity of the forbidden line as it changes with rlogxi
+%% The lower and upper index values for that transition are 1 and 2, respectively
+
 variable o_vii_F_lum = xstar_line_prop( pe_grid, o_vii_F, "luminosity" );
 variable rlogxi  = xstar_get_grid_par( pe_grid, "rlogxi" );
 
